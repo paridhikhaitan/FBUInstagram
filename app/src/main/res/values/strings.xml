@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Instagram</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Profile</string>
+    <string name="title_activity_user_timeline">UserTimeline</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_user_post">UserPostActivity</string>
+</resources>
