@@ -130,8 +130,6 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.ViewHolder> 
                 viewHolder.ivProfilePhoto.setVisibility(View.INVISIBLE);
             }
 
-            //todo-set the right vector
-
 
             viewHolder.likeButton.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)

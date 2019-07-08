@@ -8,6 +8,7 @@
 
     <EditText
         android:id="@+id/signupName"
+        android:paddingLeft="20dp"
         android:background="@drawable/border"
         android:layout_width="248dp"
         android:layout_height="49dp"
@@ -28,6 +29,7 @@
 
     <EditText
         android:id="@+id/signupEmail"
+        android:paddingLeft="20dp"
         android:layout_width="248dp"
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
@@ -46,6 +48,8 @@
 
     <EditText
         android:id="@+id/signupPassword"
+        android:paddingLeft="20dp"
+
         android:layout_width="248dp"
         android:layout_height="49dp"
         android:layout_marginStart="8dp"

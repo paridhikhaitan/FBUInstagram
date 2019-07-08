@@ -25,7 +25,6 @@
             android:name=".UserTimeline"
             android:label="@string/title_activity_user_timeline"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TimelineActivity" /> <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.codepath.fileprovider"
@@ -38,10 +37,10 @@
 
         <activity android:name=".SignUpActivity" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".CameraActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
