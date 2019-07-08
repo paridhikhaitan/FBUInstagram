@@ -5,6 +5,8 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
@@ -13,6 +15,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE="image";
     public static final String KEY_USER="user";
     public static final String KEY_CREATE="createdAt";
+    public static final String KEY_ISLIKED= "isLikedByUser";
 
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
@@ -37,6 +40,14 @@ public class Post extends ParseObject {
 
     public void setUser(ParseUser parseUser){
         put(KEY_USER, parseUser);
+    }
+
+    public JSONArray getIsLiked(){
+        return getJSONArray("isLikedByUser");
+    }
+
+    public void setIsLiked(JSONArray jsonArray){
+        put(KEY_ISLIKED, jsonArray);
     }
 
     public String getCreate(){

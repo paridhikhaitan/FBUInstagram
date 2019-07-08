@@ -1,4 +1,4 @@
-package com.example.fbuinstagram;
+package com.example.fbuinstagram.Fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,17 +8,20 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fbuinstagram.Post;
+import com.example.fbuinstagram.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -26,9 +29,13 @@ import com.parse.SaveCallback;
 
 import java.io.File;
 
-public class HomeActivity extends AppCompatActivity {
+import static android.app.Activity.RESULT_OK;
+
+public class ComposeFragment extends Fragment {
+
 
     private final String TAG="HomeActivity";
+
     private EditText caption;
     private Button submitButton;
     private ImageView cameraClick;
@@ -38,20 +45,20 @@ public class HomeActivity extends AppCompatActivity {
     public String photoFileName="photo.jpg";
     private File photoFile;
 
-    private BottomNavigationView bottomNavigationView;
-
+    //called based on when the fragment should initiate or make it's view object hierarchy
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_compose, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        caption= (EditText) view.findViewById(R.id.et_caption);
+        submitButton= (Button) view.findViewById(R.id.bt_submit);
+        cameraClick= (ImageView) view.findViewById(R.id.iv_photoButton);
+        photoDisplay= (ImageView) view.findViewById(R.id.iv_displayphoto);
 
-        caption= (EditText) findViewById(R.id.et_caption);
-        submitButton= (Button) findViewById(R.id.bt_submit);
-        cameraClick= (ImageView) findViewById(R.id.iv_photoButton);
-        photoDisplay= (ImageView) findViewById(R.id.iv_displayphoto);
-
-        bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         cameraClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,38 +77,15 @@ public class HomeActivity extends AppCompatActivity {
                 //Some error checking before we call save post
                 if(photoFile==null || photoDisplay.getDrawable() == null){
                     Log.e(TAG, "No Photo To Submit");
-                    Toast.makeText(HomeActivity.this,"Please submit a photo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Please submit a photo", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 savePost(description, user, photoFile);
             }
         });
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            Intent intent;
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId()==R.id.profile_action){
-                    intent= new Intent(HomeActivity.this, UserProfile.class);
-                    startActivity(intent);
-                }
-                if(menuItem.getItemId()==R.id.home_action){
-                    intent= new Intent(HomeActivity.this, UserTimeline.class);
-                    startActivity(intent);
-                }
-                if(menuItem.getItemId()==R.id.logout_action){
-                    ParseUser.logOut();
-                    ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                    intent= new Intent(HomeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-
-                return true;
-            }
-        });
-
     }
+
 
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
@@ -112,12 +96,14 @@ public class HomeActivity extends AppCompatActivity {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(HomeActivity.this, "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
-        if (intent.resolveActivity(getPackageManager()) != null) {
+
+        //getPackagemanager is called on a context
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
@@ -135,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
                 photoDisplay.setImageBitmap(takenImage);
                 //means picture wasn't actually taken
             } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -145,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
@@ -181,12 +167,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent= new Intent(HomeActivity.this, UserTimeline.class);
-        startActivity(intent);
+        /*Intent intent= new Intent(CameraActivity.this, UserTimeline.class);
+        startActivity(intent);*/
 
 
     }
-
-
-
 }

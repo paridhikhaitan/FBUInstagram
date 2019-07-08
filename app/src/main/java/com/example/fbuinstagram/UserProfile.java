@@ -1,14 +1,11 @@
 package com.example.fbuinstagram;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -36,21 +33,21 @@ public class UserProfile extends AppCompatActivity {
 
         bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-        rvPosts= (RecyclerView) findViewById(R.id.rv_profile_posts);
+  /*      rvPosts= (RecyclerView) findViewById(R.id.rv_profile_posts);
         posts= new ArrayList<>();
-        adapter= new InstaAdapter(posts);
+        adapter= new InstaAdapter(posts, 0);*/
 
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(adapter);
 
         queryPosts();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+ /*       bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             Intent intent;
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if(menuItem.getItemId()==R.id.post_action){
-                    intent= new Intent(UserProfile.this, HomeActivity.class);
+                    intent= new Intent(UserProfile.this, CameraActivity.class);
                     startActivity(intent);
                 }
                 if(menuItem.getItemId()==R.id.home_action){
@@ -61,14 +58,14 @@ public class UserProfile extends AppCompatActivity {
                 if(menuItem.getItemId()==R.id.logout_action){
                     ParseUser.logOut();
                     ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                    intent= new Intent(UserProfile.this, MainActivity.class);
+                    intent= new Intent(UserProfile.this, LoginActivity.class);
                     startActivity(intent);
                 }
 
                 return true;
             }
         });
-
+*/
     }
 
     public void queryPosts(){
@@ -86,12 +83,13 @@ public class UserProfile extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //run the loop the other way around
-                for(int i=0; i<objects.size(); i++){
+                int len= objects.size()-1;
+                for(int i=len; i>=0; i--){
                     Post post= objects.get(i);
                     posts.add(post);
                     Log.d(TAG, "Post: "+posts.get(i).getDescription());
                     Log.d(TAG, posts.get(i).getUser().getUsername());
-                    adapter.notifyItemInserted(posts.size()-1);
+                    adapter.notifyItemInserted(0);
                 }
             }
         });

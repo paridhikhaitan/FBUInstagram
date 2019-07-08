@@ -13,7 +13,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText UserName;
     private EditText UserPassword;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         //makes the user data persist across activities
         currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            Intent intent= new Intent(MainActivity.this, UserTimeline.class);
+            Intent intent= new Intent(LoginActivity.this, CameraActivity.class);
             startActivity(intent);
         }
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
        SignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent= new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 //if you don't have any exceptions thrown
                 if(e ==null) {
                     Log.d("LoginActivity", "Log in successfull woo");
-                    Intent intent= new Intent(MainActivity.this, UserTimeline.class);
+                    Intent intent= new Intent(LoginActivity.this, CameraActivity.class);
                     startActivity(intent);
                     finish();
                 } else {

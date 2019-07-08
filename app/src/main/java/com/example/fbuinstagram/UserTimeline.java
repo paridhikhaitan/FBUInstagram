@@ -5,19 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserTimeline extends AppCompatActivity {
 
@@ -58,6 +52,7 @@ public class UserTimeline extends AppCompatActivity {
 
         bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+/*
         rvPosts= (RecyclerView) findViewById(R.id.rv_posts);
         posts= new ArrayList<>();
         adapter= new InstaAdapter(posts);
@@ -66,13 +61,14 @@ public class UserTimeline extends AppCompatActivity {
         rvPosts.setAdapter(adapter);
         
         queryPosts();
+*/
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             Intent intent;
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if(menuItem.getItemId()==R.id.post_action){
-                    intent= new Intent(UserTimeline.this, HomeActivity.class);
+                    intent= new Intent(UserTimeline.this, CameraActivity.class);
                     startActivity(intent);
                     Toast.makeText(UserTimeline.this, "Camera", Toast.LENGTH_SHORT);
                 }
@@ -85,7 +81,7 @@ public class UserTimeline extends AppCompatActivity {
                 if(menuItem.getItemId()==R.id.logout_action){
                     ParseUser.logOut();
                     ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-                    intent= new Intent(UserTimeline.this, MainActivity.class);
+                    intent= new Intent(UserTimeline.this, LoginActivity.class);
                     startActivity(intent);
                 }
 
@@ -95,7 +91,7 @@ public class UserTimeline extends AppCompatActivity {
 
     }
 
-    public void queryPosts(){
+ /*   public void queryPosts(){
        // Toast.makeText(this, "Timeline", Toast.LENGTH_LONG).show();
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
@@ -111,16 +107,17 @@ public class UserTimeline extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //run the loop the other way around
-                adapter.clear();
-                for(int i=0; i<objects.size(); i++){
+
+                int len= objects.size()-1;
+
+                //adapter.clear();
+                for(int i=len; i>=0; i--){
                     Post post= objects.get(i);
                     posts.add(post);
-                    Log.d(TAG, "Post: "+posts.get(i).getDescription());
-                    Log.d(TAG, posts.get(i).getUser().getUsername());
                     adapter.notifyItemInserted(posts.size()-1);
                 }
             }
         });
     }
-
+*/
 }
