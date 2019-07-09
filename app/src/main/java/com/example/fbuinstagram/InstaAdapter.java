@@ -112,8 +112,19 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.ViewHolder> 
 
             JSONArray totalNumLikes= post.getIsLiked();
             if(totalNumLikes==null || totalNumLikes.length()==0){
+                viewHolder.likeButton.setImageResource(R.drawable.ufi_heart);
                 totalNumLikes= new JSONArray();
                 post.setIsLiked(totalNumLikes);
+            }else{
+                for(int j=0; j<totalNumLikes.length(); j++){
+                    try {
+                        if(totalNumLikes.getString(j).equals(ParseUser.getCurrentUser().getObjectId())){
+                            viewHolder.likeButton.setImageResource(R.drawable.ufi_heart_active);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             Integer length= post.getIsLiked().length();
@@ -129,7 +140,6 @@ public class InstaAdapter extends RecyclerView.Adapter<InstaAdapter.ViewHolder> 
             } else {
                 viewHolder.ivProfilePhoto.setVisibility(View.INVISIBLE);
             }
-
 
             viewHolder.likeButton.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
